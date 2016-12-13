@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xin.mapper.CityMapper">
+    <resultMap id="base" type="com.xin.domain.City">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+    <sql id="pk">
+        id
+    </sql>
+    <sql id="fields">
+        id, name
+    </sql>
+    <sql id="fields_add_pre">
+        t.id, t.name
+    </sql>
+    <sql id="table">
+        city
+    </sql>
+    <sql id="table_add_alias">
+        city t
+    </sql>
+    <sql id="orderBy">
+        ${orderBy}
+    </sql>
+    <sql id="equalPk">
+        WHERE
+        <include refid="pk"/>
+        = #{pk}
+    </sql>
+    <sql id="fieldsCondition">
+        <trim prefix="" prefixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+        </trim>
+    </sql>
+    <sql id="valuesCondition">
+        <trim prefix="" prefixOverrides=",">
+            id=#{id},
+            name=#{name},
+        </trim>
+    </sql>
+    <sql id="equalCondition">
+        <where>
+            <if test="id != null">
+                id=#{id}
+            </if>
+            <if test="name != null">
+                and name=#{name}
+            </if>
+        </where>
+    </sql>
+    <sql id="set">
+        <set>
+            <if test="name != null">
+                name=#{name},
+            </if>
+        </set>
+    </sql>
+    <select id="findByPk" resultMap="base">
+        SELECT
+        <include refid="fields"/>
+        FROM
+        <include refid="table"/>
+        <include refid="equalPk"/>
+    </select>
+    <select id="findOne" resultMap="base">
+        SELECT
+        <include refid="fields"/>
+        FROM
+        <include refid="table"/>
+        <include refid="equalCondition"/>
+    </select>
+    <select id="findList" resultMap="base">
+        SELECT
+        <include refid="fields"/>
+        FROM
+        <include refid="table"/>
+        <include refid="equalCondition"/>
+        <include refid="orderBy"/>
+    </select>
+    <select id="findByPage" resultMap="base">
+        SELECT
+        <include refid="fields"/>
+        FROM
+        <include refid="table"/>
+        <include refid="equalCondition"/>
+        <include refid="orderBy"/>
+    </select>
+    <insert id="insert" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table"/>
+        (<include refid="fieldsCondition"/>)
+        values
+        (<include refid="valuesCondition"/>)
+    </insert>
+    <update id="update">
+        UPDATE
+        <include refid="table"/>
+        <include refid="set"/>
+        <include refid="equalPk"/>
+    </update>
+    <delete id="deleteByPk">
+        DELETE FROM
+        <include refid="table"/>
+        <include refid="equalPk"/>
+    </delete>
+    <delete id="delete">
+        DELETE FROM
+        <include refid="table"/>
+        <include refid="equalCondition"/>
+    </delete>
+    <!--###########################自定义代码区域#############################-->
+</mapper>
